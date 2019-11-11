@@ -1,0 +1,133 @@
+// BUTTONS
+
+.btn {
+    display: inline-flex;
+    text-align: center;
+    user-select: none;
+    align-items: center;
+    border-radius: .125rem;
+    justify-content: center;
+    line-height: 1.5;
+    transition: $transition-cubic;
+    padding: .45rem .85rem;
+    cursor: pointer;
+}
+
+.btn-primary {
+    @extend .btn;
+    background: $primary-color;
+    color: #fff;
+    // box-shadow: $shadow-basic;
+    &:hover{
+        // background: $accent-color;
+        
+        box-shadow: $shadow-d1;
+    }
+}
+.btn-flat {
+    @extend .btn;
+    &:hover {
+        background: $black10;
+    }
+}
+.btn-accent {
+    @extend .btn;
+    background: $accent-color;
+    color: #fff;
+    box-shadow: $shadow-strong;
+    padding: .65rem 2rem;
+    &:hover{
+        background: $accent-color;
+        box-shadow: $shadow-basic;
+    }
+}
+.btn-medium {
+    font-size: 1.125rem;
+    padding: .4rem 1.2rem;
+    // font-weight: 600;
+}
+.btn-large {
+    font-size: 1.25rem;
+    padding: .65rem 2rem;
+    font-weight: 600;
+    .icon-img {
+        width: 22px;
+        // transform: translateY(2px);
+        margin-right: 10px;
+    }
+}
+@media (max-width:$mobile){
+    .btn-large {
+        padding: .6rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+.btn-round {
+    @extend .btn;
+    padding: .7rem 1rem;
+    border-radius: 2rem !important;
+}
+
+.btn-round-secondary {
+    @extend .btn-round;
+    background: $secondary-color;
+    color: #fff;
+}
+
+.btn-img {
+    display: inline-block;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+.btn-img.medium{
+    width: 35px;
+}
+
+//icon inside button
+.btn-icon {
+    height: 14px;
+    margin-left: 5px;
+}
+.btn-outline {
+    @extend .btn;
+    color: #000;
+    background: transparent;
+    border: 1px solid #000;
+    &.large {
+        padding: .5rem 1.5rem;
+    }
+    &:hover {
+        background: rgba(0, 0, 0, 1);
+        color: #fff;
+    }
+}
+.btn-outline-white {
+    @extend .btn;
+    color: #fff;
+    background: transparent;
+    border: 1px solid #fff;
+    &.large {
+        padding: .5rem 1.5rem;
+    }
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+
+.link {
+    position: relative;
+    display: inline-block;
+    &:after {
+        content: '';
+        left: 0;
+        width: 100%;
+        position: absolute;
+        bottom: -5px;
+        height: 1px;
+        background: #000;
+    }
+}

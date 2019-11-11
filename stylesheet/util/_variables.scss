@@ -1,0 +1,69 @@
+//VARIABLES
+
+/// Regular font
+/// @type List;
+$text-font-stack: 'Open Sans', sans-serif !default;
+
+
+$heading-font: 'Open Serif', serif;
+
+/// Color 
+/// @type Color
+$text-color: rgb(34, 34, 34) !default;
+
+/// Brand color
+/// @type Color
+$primary-color: rgb(0, 0, 0);
+$primary-color-pale: rgba(155, 124, 85, 0.3);
+$flash-sale-color: #D6664C;
+$success-color: rgba(26, 185, 0, 1);
+
+
+/// @type Color
+$secondary-color: rgb(237, 164, 46);
+
+/// @type Color
+$accent-color: rgba(244, 87, 56, 1);
+
+/// @type Color
+$star-color: rgba(255, 198, 39, 1);
+
+/// @type Color
+$link-color: rgba(52, 128, 206, 1);
+
+
+/// @type Color
+$black10: rgba(0, 0, 0, 0.1);
+$black20: rgba(0, 0, 0, 0.2);
+$black30: rgba(0, 0, 0, 0.3);
+$black40: rgba(0, 0, 0, 0.4);
+$black50: rgba(0, 0, 0, 0.5);
+$black60: rgba(0, 0, 0, 0.6);
+$black70: rgba(0, 0, 0, 0.7);
+$black80: rgba(0, 0, 0, 0.8);
+$black90: rgba(0, 0, 0, 0.9);
+
+/// Font weight
+$weight-light: 300;
+$weight-regular: 400;
+$weight-medium: 600;
+$weight-bold: 700;
+$weight-black: 900;
+
+/// Transition
+$transition-cubic: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+
+/// Shadow
+$shadow-basic: 0 10px 40px 0 rgba(62, 57, 107, .07), 0 2px 9px 0 rgba(62, 57, 107, .06);
+$shadow-strong: 0 30px 30px 0 rgba(0, 0, 0, .15), 0 10px 10px 0 rgba(0, 0, 0, .1);
+$shadow-d1: 0 10px 20px 0 rgba(0, 0, 0, .15), 0 5px 8px 0 rgba(0, 0, 0, .1);
+$shadow-light: 0 2px 8px 0 rgba(50, 50, 50, .08);
+
+
+//BREAKPOINT
+
+$old-mobile: 500px;
+$mobile: 800px;
+$tablet: 980px;
+$desktop: 1120px;
+$large-desktop: 1120px;
