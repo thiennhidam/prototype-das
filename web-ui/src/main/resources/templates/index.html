@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>eBay</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" th:href="@{/stylesheet/main.css}" />
+</head>
+<body>
+<header class="header">
+    <div class="container flex-box">
+        <div class="left">
+            <a href="/"><img class="logo" th:src="@{/asset/logo.png}"/></a>
+        </div>
+        <div class="right">
+            <a id="loginLink" href="/login" class="__hide">Login</a>
+            <p id="loggedUser" class="__hide"></p>
+        </div>
+    </div>
+</header>
+<section class="main-content section">
+    <div class="container">
+        <div class="product-list flex-box">
+            <a class="prod-card" href="product.html">
+                <div class="prod-img"
+                     style="background-image:
+                        url('asset/img/prod-1.jpeg')">
+                </div>
+                <p class="prod-name">
+                    Macbook Pro 2016
+                </p>
+                <p class="prod-price">
+                    <span class="new-price">3000 EUR</span>
+                </p>
+            </a>
+        </div>
+    </div>
+</section>
+</body>
+<script>
+    $(document).ready(function () {
+        var user = sessionStorage.getItem('ebay-user-lname');
+        if(user != null && user != undefined){
+            $("#loggedUser").html("Hello " + user);
+            $("#loggedUser").removeClass("__hide");
+        } else {
+            $("#loginLink").removeClass("__hide")
+        }
+    });
+</script>
+</html>

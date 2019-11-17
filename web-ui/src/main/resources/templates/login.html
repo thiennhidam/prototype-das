@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eBay - Login
+    </title>
+    <link rel="stylesheet" th:href="@{/stylesheet/main.css}" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+<div class="site">
+    <div class="userform-wrapper">
+        <div class="userform">
+            <div class="form-header">
+                <a href="/">
+                    <div class="logo">
+                        <img th:src="@{/asset/logo.png}"/>
+                    </div>
+                </a>
+            </div>
+            <div class="form-body">
+                <div class="textfield">
+                    <input type="text" placeholder="Email" name="email" id="txtEmail" class="full-width"/>
+                </div>
+                <div class="textfield">
+                    <input type="password" placeholder="Password" name="password" id="txtPassword" class="full-width"/>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button onclick="login()" class="btn-primary full-width">Login</button>
+                <a class="btn-link" href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    function login() {
+        var email = $('#txtEmail').val();
+        var password = $('#txtPassword').val();
+        // var data = {
+        //     'email': email,
+        //     'password': password
+        // }
+        var data = new FormData();
+        data.append("email", email);
+        data.append("password", password);
+        axios({
+            method: 'post',
+            url: 'http://localhost:8090/auth/login/',
+            data: data,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then(function (response) {
+                //handle success
+                console.log("success");
+                console.log(response.data);
+                sessionStorage.setItem("ebay-user-id", response.data.id);
+                sessionStorage.setItem("ebay-user-email", response.data.email);
+                sessionStorage.setItem("ebay-user-fname", response.data.firstname);
+                sessionStorage.setItem("ebay-user-lname", response.data.lastname);
+                sessionStorage.setItem("ebay-user-address", response.data.address);
+                sessionStorage.setItem("ebay-user-phone", response.data.phone);
+                location.href = "/";
+            })
+            .catch(function (response) {
+                //handle error
+                console.log("error");
+                console.log(response);
+            });
+    }
+</script>
+</html>

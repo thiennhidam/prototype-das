@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eBay - checkout
+    </title>
+    <link rel="stylesheet" href="stylesheet/main.css" />
+</head>
+
+<body>
+<header class="header">
+    <div class="container flex-box">
+        <div class="left">
+            <a href="/"><img class="logo" src="asset/img/logo.png"/></a>
+        </div>
+        <div class="right">
+            <p class="">Hi, ebay user!</p>
+        </div>
+    </div>
+</header>
+<section class="main-content section">
+    <div class="container">
+        <h1>Check Out</h1>
+        <div class="flex-box">
+            <div class="col-5">
+                <form class="checkout-form">
+                    <div class="textfield">
+                        <input type="text" placeholder="Name" class=""/>
+                    </div>
+                    <div class="textfield">
+                        <input type="number" placeholder="Phone" class=""/>
+                    </div>
+                    <div class="textfield">
+                        <input type="text" placeholder="Address" class=""/>
+                    </div>
+                    <button class="btn-primary">Complete Order</button>
+                </form>
+            </div>
+            <div class="col-45">
+                <div class="checkout-product">
+                    <div class="prod-img"
+                         style="background-image:
+                            url('asset/img/prod-1.jpeg')">
+                    </div>
+                    <div class="prod-info">
+                        <h3 class="prod-title">Macbook Pro 2016</h3>
+                        <p class="prod-quantity">Quantity: 1</p>
+                        <p class="prod-price">Eur 3000,0</p>
+                    </div>
+
+                </div>
+                <div class="checkout-total">
+                    <h2>Total: <span class="amount">Eur 3000,0</span></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script>
+    $(document).ready(function () {
+        var user = sessionStorage.getItem('ebay-user-lname');
+        if(user != null && user != undefined){
+            $("#loggedUser").html("Hello " + user);
+            $("#loggedUser").removeClass("__hide");
+        } else {
+            $("#loginLink").removeClass("__hide")
+        }
+    });
+</script>
+</html>
