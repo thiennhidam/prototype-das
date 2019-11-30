@@ -7,42 +7,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title th:text="${PRODUCT_DATA.getTitle()}"></title>
-    <link rel="stylesheet" href="stylesheet/main.css" />
+    <title>Product</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" th:href="@{/stylesheet/main.css}" />
 </head>
 
 <body>
 <header class="header">
     <div class="container flex-box">
         <div class="left">
-            <a href="/"><img class="logo" src="asset/img/logo.png"/></a>
+            <a href="/"><img class="logo" th:src="@{/asset/logo.png}"/></a>
         </div>
         <div class="right">
-            <p class="">Hi, ebay user!</p>
+            <a id="loginLink" href="/login" class="__hide">Login</a>
+            <p id="loggedUser" class="__hide"></p>
         </div>
     </div>
 </header>
 <section class="main-content section">
     <div class="container">
         <div class="product-detail flex-box">
-            <div class="left col-5">
-                <div class="prod-img"
-                     style="background-image:
-                    url('asset/img/prod-1.jpeg')">
-                </div>
-            </div>
-            <div class="right col-5">
-                <h1 class="prod-title">Macbook Pro 2016</h1>
-                <p class="prod-desc">
-                    Experience your favorite iPad apps now on your Mac. With Mac Catalyst, developers can easily create Mac apps from the iPad apps you already know and love. They run natively alongside your existing Mac apps so you can drag and drop content between them. They take full advantage of the larger screen and powerful architecture of your Mac. And because they are built from their iOS versions, they provide a seamless experience across your devices.
-                </p>
-                <p class="prod-price">Eur 3000,0</p>
-                <a href="checkout.html" class="btn-primary">PURCHASE</a>
-            </div>
+<!--            <div class="left col-5">-->
+<!--                <div class="prod-img" style="background-image:url('asset/img/prod-1.jpeg')">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="right col-5">-->
+<!--                <h1 class="prod-title">Macbook Pro 2016</h1>-->
+<!--                <p class="prod-desc">-->
+<!--                    Experience your favorite iPad apps now on your Mac. With Mac Catalyst, developers can easily create Mac apps from the iPad apps you already know and love. They run natively alongside your existing Mac apps so you can drag and drop content between them. They take full advantage of the larger screen and powerful architecture of your Mac. And because they are built from their iOS versions, they provide a seamless experience across your devices.-->
+<!--                </p>-->
+<!--                <p class="prod-price">Eur 3000,0</p>-->
+<!--                <a href="checkout.html" class="btn-primary">PURCHASE</a>-->
+<!--            </div>-->
         </div>
     </div>
 </section>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
 
+    $(document).ready(function () {
+        var user = sessionStorage.getItem('ebay-user-lname');
+        if(user != null && user != undefined){
+            $("#loggedUser").html("Hello " + user);
+            $("#loggedUser").removeClass("__hide");
+        } else {
+            $("#loginLink").removeClass("__hide")
+        }
+        var values = window.location.search.split("=");
+        var id = values[1];
+        axios({
+            method: 'get',
+            url: 'http://localhost:8090/product/get/'+id,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then(function (response) {
+                var data = response.data;
+                $('.product-detail').append("<div class=\"left col-5\">\n" +
+                    "                <div class=\"prod-img\" style=\"background-image:url('" + data.photoUrl + "')\">\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "            <div class=\"right col-5\">\n" +
+                    "                <h1 class=\"prod-title\">" + data.title +"</h1>\n" +
+                    "                <p class=\"prod-desc\">\n" +
+                                        data.description +
+                    "                </p>\n" +
+                    "                <p class=\"prod-price\">Eur " + data.price +"</p>\n" +
+                    "                <a href=\"/checkout?id=" + id + "\" class=\"btn-primary\">PURCHASE</a>\n" +
+                    "            </div>");
+            })
+            .catch(function (reason) {
+
+            })
+    });
+</script>
 </body>
 
 </html>

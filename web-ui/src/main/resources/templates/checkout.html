@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <html>
 
 <head>
@@ -6,17 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>eBay - checkout
     </title>
-    <link rel="stylesheet" href="stylesheet/main.css" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" th:href="@{/stylesheet/main.css}" />
 </head>
 
 <body>
 <header class="header">
     <div class="container flex-box">
         <div class="left">
-            <a href="/"><img class="logo" src="asset/img/logo.png"/></a>
+            <a href="/"><img class="logo" th:src="@{/asset/logo.png}"/></a>
         </div>
         <div class="right">
-            <p class="">Hi, ebay user!</p>
+            <a id="loginLink" href="/login" class="__hide">Login</a>
+            <p id="loggedUser" class="__hide"></p>
         </div>
     </div>
 </header>
@@ -27,38 +32,39 @@
             <div class="col-5">
                 <form class="checkout-form">
                     <div class="textfield">
-                        <input type="text" placeholder="Name" class=""/>
+                        <input type="text" placeholder="First Name" id="txtFirstName"/>
                     </div>
                     <div class="textfield">
-                        <input type="number" placeholder="Phone" class=""/>
+                        <input type="text" placeholder="Last Name" id="txtLastName"/>
                     </div>
                     <div class="textfield">
-                        <input type="text" placeholder="Address" class=""/>
+                        <input type="number" placeholder="Phone" class="txtPhone"/>
+                    </div>
+                    <div class="textfield">
+                        <input type="text" placeholder="Address" class="txtAddress"/>
                     </div>
                     <button class="btn-primary">Complete Order</button>
                 </form>
             </div>
-            <div class="col-45">
-                <div class="checkout-product">
-                    <div class="prod-img"
-                         style="background-image:
-                            url('asset/img/prod-1.jpeg')">
-                    </div>
-                    <div class="prod-info">
-                        <h3 class="prod-title">Macbook Pro 2016</h3>
-                        <p class="prod-quantity">Quantity: 1</p>
-                        <p class="prod-price">Eur 3000,0</p>
-                    </div>
-
-                </div>
-                <div class="checkout-total">
-                    <h2>Total: <span class="amount">Eur 3000,0</span></h2>
-                </div>
+            <div class="col-45 order-summary">
+<!--                <div class="checkout-product">-->
+<!--                    <div class="prod-img" style="background-image: url('asset/img/prod-1.jpeg')">-->
+<!--                    </div>-->
+<!--                    <div class="prod-info">-->
+<!--                        <h3 class="prod-title">Macbook Pro 2016</h3>-->
+<!--                        <p class="prod-quantity">Quantity: 1</p>-->
+<!--                        <p class="prod-price">Eur 3000,0</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="checkout-total">-->
+<!--                    <h2>Total: <span class="amount">Eur 3000,0</span></h2>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
 </section>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     $(document).ready(function () {
         var user = sessionStorage.getItem('ebay-user-lname');
@@ -68,6 +74,39 @@
         } else {
             $("#loginLink").removeClass("__hide")
         }
+        //get user info
+        var userId = sessionStorage.getItem("ebay-user-id");
+        var email = sessionStorage.getItem("ebay-user-email");
+        var fname = sessionStorage.getItem("ebay-user-fname");
+        var lname = sessionStorage.getItem("ebay-user-lname");
+        var address = sessionStorage.getItem("ebay-user-address");
+        var phone = sessionStorage.getItem("ebay-user-phone");
+
+        $("#txtEmail").val(email);
+        $("#txtFirstName").val(fname);
+        $("#txtLastName").val(lname);
+        $("#txtPhone").val(phone);
+        $("#txtAddress").val(address);
+
+        var values = window.location.search.split("=");
+        var id = values[1];
+        axios({
+            method: 'get',
+            url: 'http://localhost:8090/product/get/'+id,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then(function (response) {
+                var data = response.data;
+                $(".order-summary").append(" <div class=\"checkout-product\"> <div class=\"prod-img\" style=\"background-image: url('" + data.photoUrl +"')\">\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"prod-info\">\n" +
+                    "                        <h3 class=\"prod-title\">" + data.title +"</h3>\n" +
+                    "                        <p class=\"prod-quantity\">Quantity: 1</p>\n" +
+                    "                        <p class=\"prod-price\">Eur " + data.price +"</p>\n" +
+                    "                    </div></div> <div class=\"checkout-total\">\n" +
+                    "                    <h2>Total: <span class=\"amount\">Eur" + data.price +"</span></h2>\n" +
+                    "                </div>");
+            }).catch(function (reason) {  });
     });
 </script>
 </html>

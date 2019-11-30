@@ -25,22 +25,16 @@
 <section class="main-content section">
     <div class="container">
         <div class="product-list flex-box">
-            <a class="prod-card" href="product.html">
-                <div class="prod-img"
-                     style="background-image:
-                        url('asset/img/prod-1.jpeg')">
-                </div>
-                <p class="prod-name">
-                    Macbook Pro 2016
-                </p>
-                <p class="prod-price">
-                    <span class="new-price">3000 EUR</span>
-                </p>
-            </a>
+<!--            <a class="prod-card" href="product.html">-->
+<!--                <div class="prod-img" style="background-image: url('asset/img/prod-1.jpeg')"></div>-->
+<!--                <p class="prod-name">Macbook Pro 2016</p>-->
+<!--                <p class="prod-price"><span class="new-price">3000 EUR</span></p>-->
+<!--            </a>-->
         </div>
     </div>
 </section>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     $(document).ready(function () {
         var user = sessionStorage.getItem('ebay-user-lname');
@@ -50,6 +44,29 @@
         } else {
             $("#loginLink").removeClass("__hide")
         }
+        //get product list
+        axios({
+            method: 'get',
+            url: 'http://localhost:8090/product/get-all/',
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then(function (response) {
+                console.log("success");
+                console.log(response);
+                var data = [];
+                 data = response.data;
+                for(var i=0; i< data.length; i++){
+                    $(".product-list").append("<a class=\"prod-card\" href=\"/product?id=" + data[i].id +"\">\n" +
+                        "                <div class=\"prod-img\" style=\"background-image: url('" + data[i].photoUrl + "')\"></div>\n" +
+                        "                <p class=\"prod-name\">" + data[i].title + "</p>\n" +
+                        "                <p class=\"prod-price\"><span class=\"new-price\"> "+ data[i].price + " EUR</span></p>\n" +
+                        "            </a>");
+                }
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
     });
 </script>
 </html>
