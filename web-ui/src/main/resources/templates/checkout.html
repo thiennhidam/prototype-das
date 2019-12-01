@@ -30,7 +30,7 @@
         <h1>Check Out</h1>
         <div class="flex-box">
             <div class="col-5">
-                <form class="checkout-form">
+                <div class="checkout-form">
                     <div class="textfield">
                         <input type="text" placeholder="First Name" id="txtFirstName"/>
                     </div>
@@ -38,13 +38,13 @@
                         <input type="text" placeholder="Last Name" id="txtLastName"/>
                     </div>
                     <div class="textfield">
-                        <input type="number" placeholder="Phone" class="txtPhone"/>
+                        <input type="number" placeholder="Phone" id="txtPhone"/>
                     </div>
                     <div class="textfield">
-                        <input type="text" placeholder="Address" class="txtAddress"/>
+                        <input type="text" placeholder="Address" id="txtAddress"/>
                     </div>
-                    <button class="btn-primary">Complete Order</button>
-                </form>
+                    <a id="completeOrderBtn" class="btn-primary">Complete Order</a>
+                </div>
             </div>
             <div class="col-45 order-summary">
 <!--                <div class="checkout-product">-->
@@ -89,10 +89,11 @@
         $("#txtAddress").val(address);
 
         var values = window.location.search.split("=");
-        var id = values[1];
+        var productId = values[1];
+
         axios({
             method: 'get',
-            url: 'http://localhost:8090/product/get/'+id,
+            url: 'http://localhost:8090/product/get/'+productId,
             headers: {'Content-Type': 'multipart/form-data' }
         })
             .then(function (response) {
@@ -104,9 +105,35 @@
                     "                        <p class=\"prod-quantity\">Quantity: 1</p>\n" +
                     "                        <p class=\"prod-price\">Eur " + data.price +"</p>\n" +
                     "                    </div></div> <div class=\"checkout-total\">\n" +
-                    "                    <h2>Total: <span class=\"amount\">Eur" + data.price +"</span></h2>\n" +
+                    "                    <h2>Total: <span class=\"amount\">Eur " + data.price +"</span></h2>\n" +
                     "                </div>");
             }).catch(function (reason) {  });
+        $("#completeOrderBtn").click(function () {
+            createNewOrder();
+        });
+        //new order
+        function createNewOrder() {
+            var orderData = new FormData();
+            orderData.append("userId", userId);
+            orderData.append("productId", productId);
+            orderData.append("address", address);
+            axios({
+                method: 'post',
+                url: 'http://localhost:8090/cart/add-order/',
+                data: orderData,
+                headers: {'Content-Type': 'multipart/form-data' }
+            })
+                .then(function (response) {
+                    //handle success
+                    console.log("success");
+                    location.href = "/order-success";
+                })
+                .catch(function (response) {
+                    //handle error
+                    alert("Error! You order cannot be placed");
+                    console.log(response);
+                });
+        }
     });
 </script>
 </html>

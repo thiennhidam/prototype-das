@@ -23,7 +23,7 @@ public class CartService {
         this.orderDetailRepository = orderDetailRepository;
     }
 
-    public boolean addNewOrder(UserData userData, Integer products[]){
+    public boolean addNewOrders(UserData userData, Integer products[]){
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         EbayOrder ebayOrder = new EbayOrder();
         ebayOrder.setUserId(userData.getId());
@@ -40,6 +40,25 @@ public class CartService {
                 orderDetail.setQuantity(1); //default
                 orderDetailRepository.saveAndFlush(orderDetail);
             }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    public boolean addNewSingleOrder(UserData userData, Integer productId, String address){
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        EbayOrder ebayOrder = new EbayOrder();
+        ebayOrder.setUserId(userData.getId());
+        ebayOrder.setShippingAddress(address);
+        ebayOrder.setTime(currentTime);
+        ebayOrder.setStatus(Const.ORDER_STATUS.CREATED.value);
+        try {
+            ebayOrder = orderRepository.saveAndFlush(ebayOrder);
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderId(ebayOrder.getId());
+            orderDetail.setProductId(productId);
+            orderDetail.setQuantity(1); //default
+            orderDetailRepository.saveAndFlush(orderDetail);
             return true;
         }catch (Exception e){
             return false;

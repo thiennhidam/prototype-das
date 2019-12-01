@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -43,11 +40,21 @@ public class CartController {
 //        return new Order(1, 1, product);
 //    }
 
-    @RequestMapping("/add-order")
-    public ResponseEntity addOrder(@RequestParam("userId") Integer userId, @RequestParam("productId") Integer productId[]){
+    @RequestMapping(value = "/add-order", method = RequestMethod.POST)
+    public ResponseEntity addOrder(@RequestParam("userId") Integer userId, @RequestParam("productId") Integer productId, @RequestParam("address") String address){
         UserData userData = restTemplate.getForObject("http://user-service/get/"+userId, UserData.class);
         if(userData != null){
-            boolean ok = cartService.addNewOrder(userData, productId);
+            boolean ok = cartService.addNewSingleOrder(userData, productId, address);
+            if(ok) return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @RequestMapping("/add-order-2")
+    public ResponseEntity addOrder2(@RequestParam("userId") Integer userId, @RequestParam("productId") Integer productId[]){
+        UserData userData = restTemplate.getForObject("http://user-service/get/"+userId, UserData.class);
+        if(userData != null){
+            boolean ok = cartService.addNewOrders(userData, productId);
             if(ok) return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

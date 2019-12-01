@@ -36,9 +36,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/get-all", method = RequestMethod.GET)
-    public ResponseEntity getProductList(){
+    public ResponseEntity getProductList() {
         List<Product> products = productService.getActiveProductList();
-        if(products != null){
+        if (products != null) {
             return ResponseEntity.status(HttpStatus.OK).body(products);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

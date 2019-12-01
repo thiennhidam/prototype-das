@@ -27,4 +27,9 @@ public class MainRouter {
         return "checkout";
     }
 
+    @GetMapping("/order-success")
+    public String orderSuccess(){
+        return "success";
+    }
+
 }
